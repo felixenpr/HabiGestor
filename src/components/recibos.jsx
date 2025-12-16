@@ -1,25 +1,52 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { FileText, Droplets, Zap, Home, Printer, Eye } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { departments, buildings, defaultRates } from "@/lib/mock-data"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from 'react'
+import { FileText, Droplets, Zap, Home, Printer, Eye } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
-export function Recibos({ selectedBuilding }) {
-  const [selectedDept, setSelectedDept] = useState("")
-  const [receiptType, setReceiptType] = useState("")
+export function Recibos({
+  departments,
+  buildings,
+  settings,
+  selectedBuilding,
+}) {
+  const [selectedDept, setSelectedDept] = useState('')
+  const [receiptType, setReceiptType] = useState('')
   const [previewReceipt, setPreviewReceipt] = useState(null)
 
-  const filteredDepts = departments.filter((d) => d.building === selectedBuilding)
+  const filteredDepts = departments.filter(
+    (d) => d.building === selectedBuilding
+  )
   const buildingName = buildings.find((b) => b.id === selectedBuilding)?.name
 
   const receiptTypes = [
-    { id: "water", name: "Agua", icon: Droplets, color: "text-chart-2" },
-    { id: "electricity", name: "Electricidad", icon: Zap, color: "text-chart-4" },
-    { id: "maintenance", name: "Mantenimiento", icon: Home, color: "text-primary" },
+    { id: 'water', name: 'Agua', icon: Droplets, color: 'text-chart-2' },
+    {
+      id: 'electricity',
+      name: 'Electricidad',
+      icon: Zap,
+      color: 'text-chart-4',
+    },
+    {
+      id: 'maintenance',
+      name: 'Mantenimiento',
+      icon: Home,
+      color: 'text-primary',
+    },
   ]
 
   const generateReceipt = () => {
@@ -30,29 +57,39 @@ export function Recibos({ selectedBuilding }) {
     let details = []
 
     switch (receiptType) {
-      case "water":
+      case 'water':
         const waterConsumption = 15
-        amount = waterConsumption * defaultRates.waterRate
+        amount = waterConsumption * settings.waterRate
         details = [
-          { label: "Consumo", value: `${waterConsumption} m³` },
-          { label: "Tarifa", value: `S/ ${defaultRates.waterRate.toFixed(2)}/m³` },
+          { label: 'Consumo', value: `${waterConsumption} m³` },
+          {
+            label: 'Tarifa',
+            value: `S/ ${settings.waterRate.toFixed(2)}/m³`,
+          },
         ]
         break
-      case "electricity":
+      case 'electricity':
         const elecConsumption = 120
-        amount = elecConsumption * defaultRates.electricityRate
+        amount = elecConsumption * settings.electricityRate
         details = [
-          { label: "Consumo", value: `${elecConsumption} kWh` },
-          { label: "Tarifa", value: `S/ ${defaultRates.electricityRate.toFixed(2)}/kWh` },
+          { label: 'Consumo', value: `${elecConsumption} kWh` },
+          {
+            label: 'Tarifa',
+            value: `S/ ${settings.electricityRate.toFixed(2)}/kWh`,
+          },
         ]
         break
-      case "maintenance":
-        amount = defaultRates.maintenance + defaultRates.cleaning + defaultRates.security + defaultRates.commonAreas
+      case 'maintenance':
+        amount =
+          settings.maintenance +
+          settings.cleaning +
+          settings.security +
+          settings.commonAreas
         details = [
-          { label: "Mantenimiento", value: `S/ ${defaultRates.maintenance.toFixed(2)}` },
-          { label: "Limpieza", value: `S/ ${defaultRates.cleaning.toFixed(2)}` },
-          { label: "Seguridad", value: `S/ ${defaultRates.security.toFixed(2)}` },
-          { label: "Áreas Comunes", value: `S/ ${defaultRates.commonAreas.toFixed(2)}` },
+          {
+            label: 'Mantenimiento',
+            value: `S/ ${settings.maintenance.toFixed(2)}`,
+          },
         ]
         break
     }
@@ -64,8 +101,11 @@ export function Recibos({ selectedBuilding }) {
       department: dept.number,
       tenant: dept.tenant,
       owner: dept.owner,
-      month: new Date().toLocaleDateString("es-PE", { month: "long", year: "numeric" }),
-      date: new Date().toLocaleDateString("es-PE"),
+      month: new Date().toLocaleDateString('es-PE', {
+        month: 'long',
+        year: 'numeric',
+      }),
+      date: new Date().toLocaleDateString('es-PE'),
       details,
       amount,
     })
@@ -74,7 +114,9 @@ export function Recibos({ selectedBuilding }) {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-foreground">Generador de Recibos</h1>
+        <h1 className="text-2xl font-semibold text-foreground">
+          Generador de Recibos
+        </h1>
         <p className="text-muted-foreground mt-1">{buildingName}</p>
       </div>
 
@@ -82,11 +124,15 @@ export function Recibos({ selectedBuilding }) {
         {/* Receipt Generator */}
         <Card className="border-0 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-lg font-medium">Crear Nuevo Recibo</CardTitle>
+            <CardTitle className="text-lg font-medium">
+              Crear Nuevo Recibo
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <label className="text-sm font-medium text-foreground mb-2 block">Departamento</label>
+              <label className="text-sm font-medium text-foreground mb-2 block">
+                Departamento
+              </label>
               <Select value={selectedDept} onValueChange={setSelectedDept}>
                 <SelectTrigger className="rounded-xl">
                   <SelectValue placeholder="Seleccionar departamento" />
@@ -102,7 +148,9 @@ export function Recibos({ selectedBuilding }) {
             </div>
 
             <div>
-              <label className="text-sm font-medium text-foreground mb-3 block">Tipo de Recibo</label>
+              <label className="text-sm font-medium text-foreground mb-3 block">
+                Tipo de Recibo
+              </label>
               <div className="grid grid-cols-3 gap-3">
                 {receiptTypes.map((type) => {
                   const Icon = type.icon
@@ -112,19 +160,25 @@ export function Recibos({ selectedBuilding }) {
                       onClick={() => setReceiptType(type.id)}
                       className={`p-4 rounded-xl border-2 transition-all ${
                         receiptType === type.id
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-muted-foreground"
+                          ? 'border-primary bg-primary/5'
+                          : 'border-border hover:border-muted-foreground'
                       }`}
                     >
                       <Icon className={`w-6 h-6 mx-auto mb-2 ${type.color}`} />
-                      <p className="text-sm font-medium text-foreground">{type.name}</p>
+                      <p className="text-sm font-medium text-foreground">
+                        {type.name}
+                      </p>
                     </button>
                   )
                 })}
               </div>
             </div>
 
-            <Button onClick={generateReceipt} disabled={!selectedDept || !receiptType} className="w-full rounded-xl">
+            <Button
+              onClick={generateReceipt}
+              disabled={!selectedDept || !receiptType}
+              className="w-full rounded-xl"
+            >
               <Eye className="w-4 h-4 mr-2" />
               Vista Previa del Recibo
             </Button>
@@ -134,16 +188,48 @@ export function Recibos({ selectedBuilding }) {
         {/* Recent Receipts */}
         <Card className="border-0 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-lg font-medium">Recibos Recientes</CardTitle>
+            <CardTitle className="text-lg font-medium">
+              Recibos Recientes
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {[
-                { id: 1, dept: "101", type: "Agua", date: "05/12/2024", amount: 45.5 },
-                { id: 2, dept: "201", type: "Mantenimiento", date: "04/12/2024", amount: 320.0 },
-                { id: 3, dept: "102", type: "Electricidad", date: "03/12/2024", amount: 128.75 },
-                { id: 4, dept: "302", type: "Agua", date: "02/12/2024", amount: 38.25 },
-                { id: 5, dept: "202", type: "Mantenimiento", date: "01/12/2024", amount: 320.0 },
+                {
+                  id: 1,
+                  dept: '101',
+                  type: 'Agua',
+                  date: '05/12/2024',
+                  amount: 45.5,
+                },
+                {
+                  id: 2,
+                  dept: '201',
+                  type: 'Mantenimiento',
+                  date: '04/12/2024',
+                  amount: 320.0,
+                },
+                {
+                  id: 3,
+                  dept: '102',
+                  type: 'Electricidad',
+                  date: '03/12/2024',
+                  amount: 128.75,
+                },
+                {
+                  id: 4,
+                  dept: '302',
+                  type: 'Agua',
+                  date: '02/12/2024',
+                  amount: 38.25,
+                },
+                {
+                  id: 5,
+                  dept: '202',
+                  type: 'Mantenimiento',
+                  date: '01/12/2024',
+                  amount: 320.0,
+                },
               ].map((receipt) => (
                 <div
                   key={receipt.id}
@@ -157,10 +243,14 @@ export function Recibos({ selectedBuilding }) {
                       <p className="text-sm font-medium text-foreground">
                         Dpto {receipt.dept} - {receipt.type}
                       </p>
-                      <p className="text-xs text-muted-foreground">{receipt.date}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {receipt.date}
+                      </p>
                     </div>
                   </div>
-                  <span className="font-semibold text-foreground">S/ {receipt.amount.toFixed(2)}</span>
+                  <span className="font-semibold text-foreground">
+                    S/ {receipt.amount.toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -169,7 +259,10 @@ export function Recibos({ selectedBuilding }) {
       </div>
 
       {/* Receipt Preview Modal */}
-      <Dialog open={!!previewReceipt} onOpenChange={() => setPreviewReceipt(null)}>
+      <Dialog
+        open={!!previewReceipt}
+        onOpenChange={() => setPreviewReceipt(null)}
+      >
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Vista Previa del Recibo</DialogTitle>
@@ -177,10 +270,17 @@ export function Recibos({ selectedBuilding }) {
 
           {previewReceipt && (
             <div className="space-y-4 mt-4">
-              <div className="p-6 border border-border rounded-xl space-y-4 bg-card" id="receipt-preview">
+              <div
+                className="p-6 border border-border rounded-xl space-y-4 bg-card"
+                id="receipt-preview"
+              >
                 <div className="text-center border-b border-border pb-4">
-                  <h3 className="font-bold text-xl text-foreground">{previewReceipt.building}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Recibo de {previewReceipt.typeName}</p>
+                  <h3 className="font-bold text-xl text-foreground">
+                    {previewReceipt.building}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Recibo de {previewReceipt.typeName}
+                  </p>
                   <p className="text-xs text-muted-foreground">
                     N° {Math.random().toString(36).substr(2, 9).toUpperCase()}
                   </p>
@@ -189,27 +289,39 @@ export function Recibos({ selectedBuilding }) {
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <p className="text-muted-foreground">Inquilino:</p>
-                    <p className="font-medium text-foreground">{previewReceipt.tenant}</p>
+                    <p className="font-medium text-foreground">
+                      {previewReceipt.tenant}
+                    </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Departamento:</p>
-                    <p className="font-medium text-foreground">{previewReceipt.department}</p>
+                    <p className="font-medium text-foreground">
+                      {previewReceipt.department}
+                    </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Período:</p>
-                    <p className="font-medium text-foreground capitalize">{previewReceipt.month}</p>
+                    <p className="font-medium text-foreground capitalize">
+                      {previewReceipt.month}
+                    </p>
                   </div>
                   <div>
                     <p className="text-muted-foreground">Fecha Emisión:</p>
-                    <p className="font-medium text-foreground">{previewReceipt.date}</p>
+                    <p className="font-medium text-foreground">
+                      {previewReceipt.date}
+                    </p>
                   </div>
                 </div>
 
                 <div className="border-t border-border pt-4 space-y-2">
-                  <h4 className="font-medium text-sm text-foreground mb-2">Detalle:</h4>
+                  <h4 className="font-medium text-sm text-foreground mb-2">
+                    Detalle:
+                  </h4>
                   {previewReceipt.details.map((detail, index) => (
                     <div key={index} className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">{detail.label}:</span>
+                      <span className="text-muted-foreground">
+                        {detail.label}:
+                      </span>
                       <span className="text-foreground">{detail.value}</span>
                     </div>
                   ))}
@@ -217,8 +329,12 @@ export function Recibos({ selectedBuilding }) {
 
                 <div className="border-t border-border pt-4">
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-foreground">TOTAL A PAGAR:</span>
-                    <span className="text-2xl font-bold text-primary">S/ {previewReceipt.amount.toFixed(2)}</span>
+                    <span className="font-bold text-foreground">
+                      TOTAL A PAGAR:
+                    </span>
+                    <span className="text-2xl font-bold text-primary">
+                      S/ {previewReceipt.amount.toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
@@ -229,10 +345,17 @@ export function Recibos({ selectedBuilding }) {
               </div>
 
               <div className="flex gap-3">
-                <Button variant="outline" onClick={() => setPreviewReceipt(null)} className="flex-1 rounded-xl">
+                <Button
+                  variant="outline"
+                  onClick={() => setPreviewReceipt(null)}
+                  className="flex-1 rounded-xl"
+                >
                   Cerrar
                 </Button>
-                <Button onClick={() => window.print()} className="flex-1 rounded-xl">
+                <Button
+                  onClick={() => window.print()}
+                  className="flex-1 rounded-xl"
+                >
                   <Printer className="w-4 h-4 mr-2" />
                   Imprimir
                 </Button>

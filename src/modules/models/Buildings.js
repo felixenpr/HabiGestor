@@ -1,9 +1,9 @@
 import clientPromise from '@/lib/mongodb'
 import { ObjectId } from 'mongodb'
 
-const COLLECTION = 'departments'
+const COLLECTION = 'buildings'
 
-export async function getDepartments(filter = {}) {
+export async function getBuildings(filter = {}) {
   const client = await clientPromise
   return client
     .db(process.env.DB_NAME)
@@ -12,25 +12,18 @@ export async function getDepartments(filter = {}) {
     .toArray()
 }
 
-export async function getDepartmentById(id) {
+export async function getBuildingById(id) {
   const client = await clientPromise
   const q = typeof id === 'string' ? { _id: new ObjectId(id) } : id
   return client.db(process.env.DB_NAME).collection(COLLECTION).findOne(q)
 }
 
-export async function createDepartment(data) {
+export async function createBuilding(data) {
   const client = await clientPromise
   const now = new Date()
   const doc = {
-    building: new ObjectId(data.building) || '',
-    number: data.number || '',
-    floor: data.floor || '',
-    owner: data.owner || '',
-    tenant: data.tenant || '',
-    debt: data.debt || 0,
-    monthsOverdue: data.monthsOverdue || 0,
-    waterReading: data.waterReading || 0,
-    electricityReading: data.electricityReading || 0,
+    name: data.name || '',
+    address: data.address || '',
     createdAt: now,
     updatedAt: now,
   }
@@ -42,7 +35,7 @@ export async function createDepartment(data) {
   return doc
 }
 
-export async function updateDepartment(id, update) {
+export async function updateBuilding(id, update) {
   const client = await clientPromise
   const q = typeof id === 'string' ? { _id: new ObjectId(id) } : id
   await client
@@ -52,7 +45,7 @@ export async function updateDepartment(id, update) {
   return getDepartmentById(q)
 }
 
-export async function deleteDepartment(id) {
+export async function deleteBuilding(id) {
   const client = await clientPromise
   const q = typeof id === 'string' ? { _id: new ObjectId(id) } : id
   return client.db(process.env.DB_NAME).collection(COLLECTION).deleteOne(q)
