@@ -67,106 +67,106 @@ export function Dashboard({
   ]
 
   return (
-    <div className="p-8">
+    <div className="p-4 md:p-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-2xl font-semibold text-foreground">
-            Bienvenido, Administrador
-          </h1>
-          <p className="text-muted-foreground mt-1">
-            Panel de administración de condominios
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <select
-              value={selectedBuilding}
-              onChange={(e) => setSelectedBuilding(e.target.value)}
-              className="appearance-none bg-card border border-border rounded-xl px-4 py-2.5 pr-10 text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-            >
-              <option value="all">Todos los edificios</option>
-              {buildings.map((building) => (
-                <option key={building._id} value={building._id}>
-                  {building.name}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-          </div>
-          <Button
-            variant="outline"
-            size="icon"
-            className="relative rounded-xl bg-transparent"
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-xl md:text-2xl font-semibold text-foreground">
+          Bienvenido, Administrador
+        </h1>
+        <p className="text-xs md:text-sm text-muted-foreground mt-1">
+          Panel de administración de condominios
+        </p>
+      </div>
+
+      {/* Controls */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6 md:mb-8">
+        <div className="flex-1 relative">
+          <select
+            value={selectedBuilding}
+            onChange={(e) => setSelectedBuilding(e.target.value)}
+            className="w-full appearance-none bg-card border border-border rounded-xl px-3 md:px-4 py-2 md:py-2.5 pr-10 text-xs md:text-sm font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           >
-            <Bell className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-destructive text-destructive-foreground text-[10px] rounded-full flex items-center justify-center">
-              3
-            </span>
-          </Button>
+            <option value="all">Todos los edificios</option>
+            {buildings.map((building) => (
+              <option key={building._id} value={building._id}>
+                {building.name}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
         </div>
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative rounded-xl bg-transparent h-9 w-9 md:h-10 md:w-10"
+        >
+          <Bell className="w-4 h-4 md:w-5 md:h-5" />
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-destructive text-destructive-foreground text-[10px] rounded-full flex items-center justify-center">
+            3
+          </span>
+        </Button>
       </div>
 
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
         <Card className="border-0 shadow-sm bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm text-muted-foreground mb-1">
                   Total Deudas
                 </p>
-                <p className="text-3xl font-semibold text-foreground">
+                <p className="text-2xl md:text-3xl font-semibold text-foreground truncate">
                   S/ {totalDebt}
                 </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  {debtors.length} departamentos con deuda
+                <p className="text-xs text-muted-foreground mt-1 md:mt-2">
+                  {debtors.length} dpto con deuda
                 </p>
               </div>
-              <div className="w-14 h-14 rounded-2xl bg-destructive/10 flex items-center justify-center">
-                <Wallet className="w-7 h-7 text-destructive" />
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-destructive/10 flex items-center justify-center flex-shrink-0">
+                <Wallet className="w-5 h-5 md:w-7 md:h-7 text-destructive" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-0 shadow-sm bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Lecturas de Agua
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm text-muted-foreground mb-1">
+                  Agua
                 </p>
-                <p className="text-3xl font-semibold text-foreground">
+                <p className="text-2xl md:text-3xl font-semibold text-foreground truncate">
                   {totalWater} m³
                 </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  {filtered.length} departamentos
+                <p className="text-xs text-muted-foreground mt-1 md:mt-2">
+                  {filtered.length} dptos
                 </p>
               </div>
-              <div className="w-14 h-14 rounded-2xl bg-chart-2/10 flex items-center justify-center">
-                <Droplets className="w-7 h-7 text-chart-2" />
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-chart-2/10 flex items-center justify-center flex-shrink-0">
+                <Droplets className="w-5 h-5 md:w-7 md:h-7 text-chart-2" />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <Card className="border-0 shadow-sm bg-card">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">
-                  Lecturas de Electricidad
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm text-muted-foreground mb-1">
+                  Electricidad
                 </p>
-                <p className="text-3xl font-semibold text-foreground">
+                <p className="text-2xl md:text-3xl font-semibold text-foreground truncate">
                   {totalElectricity} kWh
                 </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  {filtered.length} departamentos
+                <p className="text-xs text-muted-foreground mt-1 md:mt-2">
+                  {filtered.length} dptos
                 </p>
               </div>
-              <div className="w-14 h-14 rounded-2xl bg-chart-4/10 flex items-center justify-center">
-                <Zap className="w-7 h-7 text-chart-4" />
+              <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-chart-4/10 flex items-center justify-center flex-shrink-0">
+                <Zap className="w-5 h-5 md:w-7 md:h-7 text-chart-4" />
               </div>
             </div>
           </CardContent>
@@ -174,26 +174,26 @@ export function Dashboard({
       </div>
 
       {/* Chart and Debtors */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
         <Card className="border-0 shadow-sm bg-card">
-          <CardHeader>
-            <CardTitle className="text-lg font-medium">
+          <CardHeader className="p-4 md:p-6">
+            <CardTitle className="text-sm md:text-lg font-medium">
               Resumen Mensual
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={280}>
+          <CardContent className="p-4 md:p-6 pt-0 md:pt-0">
+            <ResponsiveContainer width="100%" height={250}>
               <BarChart data={monthlyData} barGap={8}>
                 <XAxis
                   dataKey="month"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 12 }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11 }}
                   tickFormatter={(value) => `S/${value / 1000}k`}
                 />
                 <Tooltip
@@ -201,11 +201,11 @@ export function Dashboard({
                     backgroundColor: 'var(--card)',
                     border: '1px solid var(--border)',
                     borderRadius: '12px',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                   }}
                   formatter={(value) => [`S/ ${value.toFixed(2)}`, '']}
+                  cursor={false}
                 />
-                <Legend />
+                <Legend wrapperStyle={{ fontSize: 12 }} />
                 <Bar
                   dataKey="ingresos"
                   fill="var(--chart-2)"
@@ -224,36 +224,36 @@ export function Dashboard({
         </Card>
 
         <Card className="border-0 shadow-sm bg-card">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-lg font-medium">
+          <CardHeader className="p-4 md:p-6 flex flex-row items-center justify-between gap-2">
+            <CardTitle className="text-sm md:text-lg font-medium">
               Deudores Recientes
             </CardTitle>
-            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full">
+            <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-full whitespace-nowrap">
               {debtors.length} total
             </span>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="p-4 md:p-6 pt-0 md:pt-0">
+            <div className="space-y-2 md:space-y-4">
               {debtors.slice(0, 4).map((debtor) => (
                 <div
                   key={debtor._id}
-                  className="flex items-center justify-between p-3 rounded-xl bg-muted/50"
+                  className="flex items-center justify-between gap-3 p-2 md:p-3 rounded-xl bg-muted/50"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
+                  <div className="flex items-center gap-2 md:gap-3 min-w-0">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center text-xs md:text-sm font-medium text-primary flex-shrink-0">
                       {debtor.number}
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
+                    <div className="min-w-0">
+                      <p className="text-xs md:text-sm font-medium text-foreground truncate">
                         {debtor.owner}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {debtor.monthsOverdue} meses de mora
+                        {debtor.monthsOverdue} meses
                       </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-destructive">
+                  <div className="text-right flex-shrink-0">
+                    <p className="text-xs md:text-sm font-semibold text-destructive">
                       S/ {Number(debtor.debt['$numberDecimal'].toString())}
                     </p>
                   </div>
@@ -266,20 +266,20 @@ export function Dashboard({
 
       {/* Recent Activity */}
       <Card className="border-0 shadow-sm bg-card">
-        <CardHeader>
-          <CardTitle className="text-lg font-medium">
+        <CardHeader className="p-4 md:p-6">
+          <CardTitle className="text-sm md:text-lg font-medium">
             Actividad Reciente
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
+        <CardContent className="p-4 md:p-6 pt-0 md:pt-0">
+          <div className="space-y-2 md:space-y-4">
             {recentActivity.map((activity) => (
               <div
                 key={activity.id}
-                className="flex items-center gap-4 p-3 rounded-xl hover:bg-muted/50 transition-colors"
+                className="flex items-center gap-3 md:gap-4 p-2 md:p-3 rounded-xl hover:bg-muted/50 transition-colors"
               >
                 <div
-                  className={`w-2 h-2 rounded-full ${
+                  className={`w-2 h-2 rounded-full flex-shrink-0 ${
                     activity.type === 'payment'
                       ? 'bg-chart-2'
                       : activity.type === 'reading'
@@ -289,10 +289,13 @@ export function Dashboard({
                           : 'bg-primary'
                   }`}
                 />
-                <p className="text-sm text-foreground flex-1">
-                  {activity.message}
+                <p className="text-xs md:text-sm text-foreground flex-1 min-w-0">
+                  <span className="hidden sm:inline">{activity.message}</span>
+                  <span className="sm:hidden">
+                    {activity.message.split(' - ')[0]}
+                  </span>
                 </p>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-muted-foreground flex-shrink-0 whitespace-nowrap">
                   {activity.time}
                 </span>
               </div>

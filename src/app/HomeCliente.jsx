@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Sidebar } from '@/components/sidebar'
+import { MobileNavigation } from '@/components/MobileNavigation'
 import { Dashboard } from '@/components/dashboard'
 import { Deudores } from '@/components/deudores'
 import { Lecturas } from '@/components/lecturas'
@@ -38,9 +39,17 @@ export default function Home({ buildings, departments, settings }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-background flex-col md:flex-row">
+      {/* Desktop Sidebar */}
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-      <main className="flex-1 overflow-auto">{renderContent()}</main>
+
+      {/* Mobile Navigation */}
+      <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto pt-16 md:pt-0">
+        {renderContent()}
+      </main>
     </div>
   )
 }

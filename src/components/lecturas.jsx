@@ -12,6 +12,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { useReadingsData } from '@/hooks/useReadingsData'
 
 export function Lecturas({
   departments,
@@ -22,10 +23,11 @@ export function Lecturas({
   const [readings, setReadings] = useState({})
   const [selectedReceipt, setSelectedReceipt] = useState(null)
 
-  const filteredDepts = departments.filter(
-    (d) => d.building === selectedBuilding
+  const { filtered, buildingName } = useReadingsData(
+    departments,
+    selectedBuilding,
+    buildings
   )
-  const buildingName = buildings.find((b) => b.id === selectedBuilding)?.name
 
   const handleReadingChange = (deptId, type, value) => {
     setReadings((prev) => ({
@@ -139,9 +141,9 @@ export function Lecturas({
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredDepts.map((dept) => (
+                    {filtered.map((dept) => (
                       <tr
-                        key={dept.id}
+                        key={dept._id}
                         className="border-b border-border last:border-0"
                       >
                         <td className="p-4 font-medium text-foreground">
@@ -230,9 +232,9 @@ export function Lecturas({
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredDepts.map((dept) => (
+                    {filtered.map((dept) => (
                       <tr
-                        key={dept.id}
+                        key={dept._id}
                         className="border-b border-border last:border-0"
                       >
                         <td className="p-4 font-medium text-foreground">
